@@ -30,11 +30,16 @@ const List = ({type, setType, rating, setRating, places}) => {
                 </Select>
             </FormControl>
             <Grid container className={classes.list}>
-                {places?.map((place,i) => (
-                    <Grid key={i} item xs={12} >
-                        <PlaceDetails place={place}/>
-                    </Grid>
-                ))}
+                {places?.map((place,i) => {
+                    if(place.name) {
+                        return (
+                            <Grid key={i} item xs={12} >
+                                <PlaceDetails place={place}/>
+                            </Grid>
+                        )
+                    }
+                    return;
+                })}
             </Grid> 
         </div>
     );
