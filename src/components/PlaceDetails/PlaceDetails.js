@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardMedia, CardContent, CardActions,Typography, Box, Chip, Button } from "@material-ui/core";
 import PhoneIcon from '@material-ui/icons/Phone';
 import LocationOnIcon  from "@material-ui/icons/LocationOn";
+import Rating from "@material-ui/lab/Rating";
 
 import useStyles from "./styles";
 
@@ -16,22 +17,32 @@ const PlaceDetails = ({place}) => {
             />
             <CardContent>
                 <Typography gutterBottom variant="h5">{place.name}</Typography>
+                {place.rating && (
+                    <Box className={classes.box}>
+                        <Rating 
+                            value={parseFloat(place.rating)}
+                            precision={0.5}
+                            readOnly
+                        />
+                        <Typography variant="subtitle1">out of {place.num_reviews} review{place.num_reviews > 1 && 's'}</Typography>
+                    </Box> 
+                )}
                 {place.price_level && (
-                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <Box className={classes.box}>
                         <Typography component="legend">Price</Typography>
                         <Typography variant="subtitle1">{place.price_level}</Typography>
                     </Box>
                 )}
                 {place.ranking && (
-                    <Box display="flex" justifyContent="space-between">
+                    <Box className={classes.box}>
                         <Typography component="legend">Ranking</Typography>
                         <Typography variant="subtitle1" style={{textAlign: "end"}}>{place.ranking}</Typography>
                     </Box>
                 )}
-                {place.awards?.map(award => (
-                    <Box display="flex" justifyContent="space-between" alignItems="center" my={1}>
-                        <img src={award.images.small} />
-                        <Typography variant="subtitle2" color="textSecondary">{award.award_type} {award.year}</Typography>
+                {place.awards?.map((award,i) => (
+                    <Box className={classes.box} my={1} key={i}>
+                        <img src={award.images.small} alt="award" />
+                        <Typography variant="subtitle2" color="textSecondary" style={{textAlign: "end"}}>{award.award_type} {award.year}</Typography>
                     </Box>
                 ))}
                 {place.cuisine?.map(({name}) => (
