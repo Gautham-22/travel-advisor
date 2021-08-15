@@ -1,12 +1,20 @@
-import React from "react";
+import React, {useEffect, useState, createRef} from "react";
 import { Typography, FormControl, InputLabel, Select, MenuItem, Grid } from "@material-ui/core";
 import PlaceDetails  from "../PlaceDetails/PlaceDetails";
 
 import useStyles from "./styles";
 
-const List = ({type, setType, rating, setRating, places}) => {
+const List = ({type, setType, rating, setRating, places, childClicked}) => {
     const classes = useStyles();
+    const [elementRefs,setElementRefs] = useState([]);
 
+    // Array(5) creates an array of length 5 with empty values, fill() - fills values as undefined
+    // Then we loop through that array and created a ref array
+    useEffect(() => {
+        let refs = Array(places.length).fill().map((_,i) => elementRefs[i] || createRef());
+        setElementRefs(refs);
+    },[places]); 
+    
     return (
         <div className={classes.container}>
             <Typography variant="h4">
@@ -30,16 +38,11 @@ const List = ({type, setType, rating, setRating, places}) => {
                 </Select>
             </FormControl>
             <Grid container className={classes.list}>
-                {places?.map((place,i) => {
-                    if(place.name) {
-                        return (
-                            <Grid key={i} item xs={12} >
-                                <PlaceDetails place={place}/>
-                            </Grid>
-                        )
-                    }
-                    return;
-                })}
+                {places?.map((place,i) => (
+                    <Grid ref={elementRefs[i]} key={i} item xs={12} >
+                        <PlaceDetails selected={childClicked === i} refProp={elementRefs[i]} place={place}/>
+                    </Grid>
+                ))}
             </Grid> 
         </div>
     );

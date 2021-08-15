@@ -6,19 +6,14 @@ import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 
 import useStyles from "./styles";
 
-const Marker = ({place,latitude,longitude,key}) => {
+const Marker = ({place}) => {
     const classes = useStyles();
-    const isDesktop = useMediaQuery("(min-width: 600px)");  
+    const isDesktop = useMediaQuery("(min-width: 600px)");
     // return result of a css mediaQuery - here return true if screen > 600px, also it works like actual css mediaquery
     // (i.e.,) value of isDesktop changes if we resize the window (more like a state in React).
 
     return (
-        <div 
-            className={classes.markerContainer} 
-            lat={latitude} 
-            lng={longitude}
-            key={key}
-        >
+        <div className={classes.markerContainer}>
             {isDesktop ? (
                 <Paper className={classes.paper}>   {/* it is a simple div with coloured background */ }
                     <Typography variant="subtitle2" style={{overflowWrap: "break-word" }}>{place.name}</Typography>
@@ -38,15 +33,14 @@ const Marker = ({place,latitude,longitude,key}) => {
     );
 }
 
-const Map = ({ coords, setCoords, setBounds, places }) => {
+const Map = ({ coords, setCoords, setBounds, places, setChildClicked }) => {
     const classes = useStyles();
-
     // children of GoogleMapReact (i.e, markers in map) must be a react component
     return (
         <div className={classes.mapContainer}>
             <GoogleMapReact
-                bootstrapURLKeys={{key: "your_api_key"}}
-                defaultCenter={coords}
+                bootstrapURLKeys={{key:"your_api_key"}}
+                defaultCenter={{ lat: 51.506, lng: -0.169 }}
                 center={coords}
                 zoom={14}
                 margin={[50, 50, 50, 50]}
@@ -54,11 +48,14 @@ const Map = ({ coords, setCoords, setBounds, places }) => {
                     setCoords({lat: e.center.lat, lng: e.center.lng});
                     setBounds({ne : e.marginBounds.ne, sw: e.marginBounds.sw})
                 }}
+                onChildClick={(clickedKeyValue) => {
+                    setChildClicked(Number(clickedKeyValue));
+                }}
             >
-                {places.length && places.map((place,i) => {
+                {places?.length && places.map((place,i) => {
                     let latitude = parseFloat(place.latitude) ? parseFloat(place.latitude) : 0;
                     let longitude = parseFloat(place.longitude) ? parseFloat(place.longitude) : 0;
-                    return (
+                    return ( 
                         <Marker 
                             place={place} 
                             lat={latitude}

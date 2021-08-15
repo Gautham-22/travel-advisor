@@ -9,9 +9,11 @@ import getPlaceDetails from "./api/travelAdvisorApi";
 const App = () => {
     const [type, setType] = useState("restaurants");
     const [rating, setRating] = useState("");
+    const [places, setPlaces] = useState([]);
+
     const [coords, setCoords] = useState({});
     const [bounds, setBounds] = useState(null);
-    const [places, setPlaces] = useState([]);
+    const [childClicked,setChildClicked] = useState();
 
     // executed only once when the component is mounted
     useEffect(() => {
@@ -25,6 +27,7 @@ const App = () => {
     useEffect(() => {
         if(bounds) {
             getPlaceDetails(type,bounds).then(data => {
+                data = data.filter((place) => place.name && place.latitude);  // collecting places that have name and lattitude
                 setPlaces(data);
             });
         }
@@ -42,6 +45,7 @@ const App = () => {
                         rating={rating}
                         setRating={setRating} 
                         places={places}
+                        childClicked={childClicked}
                     />
                 </Grid>
                 <Grid item xs={12} md={8}>
@@ -50,6 +54,7 @@ const App = () => {
                         setCoords={setCoords}
                         setBounds={setBounds}
                         places={places}
+                        setChildClicked={setChildClicked}
                     />
                 </Grid>
             </Grid>
