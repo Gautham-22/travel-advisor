@@ -13,6 +13,8 @@ const App = () => {
 
     const [coords, setCoords] = useState({});
     const [bounds, setBounds] = useState(null);
+
+    const [isLoading,setIsLoading] = useState(false);
     const [childClicked,setChildClicked] = useState();
 
     // executed only once when the component is mounted
@@ -26,9 +28,15 @@ const App = () => {
     // executed everytime when coords or bounds changes 
     useEffect(() => {
         if(bounds) {
+            setIsLoading(true);  // showing loading icon while doing api call
             getPlaceDetails(type,bounds).then(data => {
-                data = data.filter((place) => place.name && place.latitude);  // collecting places that have name and lattitude
-                setPlaces(data);
+                if(data) {
+                    data = data.filter((place) => place.name && place.latitude);  // collecting places that have name and lattitude
+                    setPlaces(data);
+                    setIsLoading(false);  // removing loading icon after api call
+                } else {
+                    setPlaces([]);
+                }
             });
         }
     },[bounds,type]);
@@ -46,6 +54,7 @@ const App = () => {
                         setRating={setRating} 
                         places={places}
                         childClicked={childClicked}
+                        isLoading={isLoading}
                     />
                 </Grid>
                 <Grid item xs={12} md={8}>
