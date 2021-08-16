@@ -10,6 +10,8 @@ const App = () => {
     const [type, setType] = useState("restaurants");
     const [rating, setRating] = useState("");
     const [places, setPlaces] = useState([]);
+    const [isFiltered,setIsFiltered] = useState(false);
+    const [filteredPlaces, setFilteredPlaces] = useState([]);
 
     const [coords, setCoords] = useState({});
     const [bounds, setBounds] = useState(null);
@@ -21,8 +23,7 @@ const App = () => {
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(({coords : {latitude, longitude}}) => {
             setCoords({lat: latitude, lng: longitude});
-        })
-        // setCoords({lat: "35.689487", lng: "139.691706"});
+        });
     },[]);
 
     // executed everytime when coords or bounds changes 
@@ -32,14 +33,33 @@ const App = () => {
             getPlaceDetails(type,bounds).then(data => {
                 if(data) {
                     data = data.filter((place) => place.name && place.latitude);  // collecting places that have name and lattitude
+                    if(isFiltered) {   // if the rating filtering is applicable
+                        const filtered = data.filter((place) => Number(place.rating) > Number(rating));
+                        setFilteredPlaces(filtered);
+                    } else {
+                        setFilteredPlaces([]);
+                    }
                     setPlaces(data);
                     setIsLoading(false);  // removing loading icon after api call
                 } else {
+                    setFilteredPlaces([]);
                     setPlaces([]);
                 }
             });
         }
     },[bounds,type]);
+
+    // executed everytime when rating changes    
+    useEffect(() => {
+        if(!rating) {
+            setFilteredPlaces([]);
+            setIsFiltered(false);
+        } else {
+            const filtered = places.filter((place) => Number(place.rating) > Number(rating));
+            setFilteredPlaces(filtered);
+            setIsFiltered(true);
+        }
+    },[rating]);
 
     return (
         <>
@@ -52,7 +72,7 @@ const App = () => {
                         setType={setType}
                         rating={rating}
                         setRating={setRating} 
-                        places={places}
+                        places={isFiltered ? filteredPlaces : places}
                         childClicked={childClicked}
                         isLoading={isLoading}
                     />
@@ -62,7 +82,7 @@ const App = () => {
                         coords={coords}
                         setCoords={setCoords}
                         setBounds={setBounds}
-                        places={places}
+                        places={isFiltered ? filteredPlaces : places}
                         setChildClicked={setChildClicked}
                     />
                 </Grid>

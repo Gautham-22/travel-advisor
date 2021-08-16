@@ -17,8 +17,10 @@ const List = ({ type, setType, rating, setRating, places, childClicked, isLoadin
     
     if(isLoading) {
         return (
-            <div className={classes.loading}>
-                <CircularProgress size="5rem" />
+            <div className={classes.container}>
+                 <div className={classes.loading}>
+                    <CircularProgress size="5rem" />
+                </div>
             </div>
         );
     }else {
