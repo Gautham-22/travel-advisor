@@ -55,7 +55,7 @@ const App = () => {
             setFilteredPlaces([]);
             setIsFiltered(false);
         } else {
-            const filtered = places.filter((place) => Number(place.rating) > Number(rating));
+            const filtered = places?.filter((place) => Number(place.rating) > Number(rating));
             setFilteredPlaces(filtered);
             setIsFiltered(true);
         }
@@ -65,8 +65,8 @@ const App = () => {
         <>
             <CssBaseline />
             <Header setCoords={setCoords} />
-            <Grid container spacing={3} style={{width : "100%"}}>
-                <Grid item xs={12} md={4}>
+            <Grid container spacing={3} style={{margin: "0 auto", width : "min(100%,1500px)"}}>
+                <Grid item xs={12} md={5}>
                     <List 
                         type={type}
                         setType={setType}
@@ -77,7 +77,7 @@ const App = () => {
                         isLoading={isLoading}
                     />
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={7}>
                     <Map 
                         coords={coords}
                         setCoords={setCoords}
@@ -87,6 +87,7 @@ const App = () => {
                     />
                 </Grid>
             </Grid>
+
         </>
     );
 };

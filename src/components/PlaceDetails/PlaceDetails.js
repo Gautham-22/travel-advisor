@@ -9,7 +9,7 @@ import useStyles from "./styles";
 const PlaceDetails = ({ place, refProp, selected }) => {
     const classes = useStyles();
     if(selected) {
-        refProp.current?.scrollIntoView({behavior: "smooth", block: "start"});
+        refProp?.current?.scrollIntoView({behavior: "smooth", block: "start"});
     }
 
     return (
@@ -28,9 +28,10 @@ const PlaceDetails = ({ place, refProp, selected }) => {
                             precision={0.5}
                             readOnly
                         />
-                        <Typography variant="subtitle1">out of {place.num_reviews} review{place.num_reviews > 1 && 's'}</Typography>
+                        <Typography variant="subtitle1" style={{textAlign: "end"}}>out of {place.num_reviews} review{place.num_reviews > 1 && 's'}</Typography>
                     </Box> 
                 )}
+                <hr style={{opacity: "0.3", margin: "10px 0px"}} />
                 {place.price_level && (
                     <Box className={classes.box}>
                         <Typography component="legend">Price</Typography>
@@ -38,7 +39,7 @@ const PlaceDetails = ({ place, refProp, selected }) => {
                     </Box>
                 )}
                 {place.ranking && (
-                    <Box className={classes.box}>
+                    <Box className={classes.box} style={{alignItems: "stretch"}}>
                         <Typography component="legend">Ranking</Typography>
                         <Typography variant="subtitle1" style={{textAlign: "end"}}>{place.ranking}</Typography>
                     </Box>
@@ -46,12 +47,15 @@ const PlaceDetails = ({ place, refProp, selected }) => {
                 {place.awards?.map((award,i) => (
                     <Box className={classes.box} my={1} key={i}>
                         <img src={award.images.small} alt="award" />
-                        <Typography variant="subtitle2" color="textSecondary" style={{textAlign: "end"}}>{award.award_type} {award.year}</Typography>
+                        <Typography variant="subtitle2" color="textSecondary" style={{textAlign: "end", overflowWrap: "wrap"}}>
+                            {award.award_type} {award.year}
+                        </Typography>
                     </Box>
                 ))}
                 {place.cuisine?.map(({name}) => (
                     <Chip size="small" key={name} label={name} className={classes.chip}></Chip>
                 ))}
+                <hr style={{opacity: "0.3", margin: "10px 0px"}} />
                 {place.address && (
                     <Typography gutterBottom variant="body2" color="textSecondary" className={classes.spacing}>
                         <LocationOnIcon /> {place.address}

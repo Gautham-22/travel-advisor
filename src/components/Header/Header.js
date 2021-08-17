@@ -47,6 +47,7 @@ const Header = ({ setCoords }) => {
                             mapRef={mapRef}
                             containerRef={geocoderContainerRef}
                             onViewportChange={handleViewportChange}
+                            placeholder="Search places"
                             mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
                             position="top-left"
                             onResult={({result : {geometry : {coordinates} } }) => setCoords({lat: coordinates[1], lng: coordinates[0]}) }
