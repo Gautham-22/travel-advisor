@@ -9,7 +9,7 @@ import useStyles from "./styles";
 const PlaceDetails = ({ place, refProp, selected }) => {
     const classes = useStyles();
     if(selected) {
-        refProp.current.scrollIntoView({behavior: "smooth", block: "start"});
+        refProp.current?.scrollIntoView({behavior: "smooth", block: "start"});
     }
 
     return (
