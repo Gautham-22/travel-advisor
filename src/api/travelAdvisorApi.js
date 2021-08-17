@@ -11,7 +11,7 @@ async function getPlaceDetails(type,bounds) {
       tr_longitude: String(bounds.ne.lng),
     },
     headers: {
-      'x-rapidapi-key': 'your_api_key',
+      'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
       'x-rapidapi-host': 'travel-advisor.p.rapidapi.com'
     }
   };

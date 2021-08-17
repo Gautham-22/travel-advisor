@@ -41,13 +41,13 @@ const Header = ({ setCoords }) => {
                         width="0%"
                         height="0%"
                         onViewportChange={handleViewportChange}
-                        mapboxApiAccessToken="pk.eyJ1IjoiZ2F1dGhhbS1rdW1hciIsImEiOiJja3Ezbmk1bjcwNjJ1Mm9tcGVnMHNqOHUwIn0.U7oyaG8uni4-6CbgG_9VrA"
+                        mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
                     >
                         <Geocoder
                             mapRef={mapRef}
                             containerRef={geocoderContainerRef}
                             onViewportChange={handleViewportChange}
-                            mapboxApiAccessToken="pk.eyJ1IjoiZ2F1dGhhbS1rdW1hciIsImEiOiJja3Ezbmk1bjcwNjJ1Mm9tcGVnMHNqOHUwIn0.U7oyaG8uni4-6CbgG_9VrA"
+                            mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
                             position="top-left"
                             onResult={({result : {geometry : {coordinates} } }) => setCoords({lat: coordinates[1], lng: coordinates[0]}) }
                         />
